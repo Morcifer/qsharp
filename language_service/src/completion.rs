@@ -396,6 +396,7 @@ fn into_completion_list(groups: impl Iterator<Item = Vec<Completion>>) -> Comple
     }
 }
 
+#[derive(Debug)]
 struct Completion {
     item: CompletionItem,
     sort_priority: SortPriority,

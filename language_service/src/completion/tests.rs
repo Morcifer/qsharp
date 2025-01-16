@@ -1861,6 +1861,59 @@ fn dont_import_if_already_glob_imported() {
     );
 }
 
+// Once issue is resolved, the line should be 8 instead of 7.
+#[test]
+fn import_item_after_comment_header() {
+    check(
+        r#"
+        namespace Foo {
+            operation Bar() : Unit {
+            }
+        }
+
+        namespace Baz {
+            /// License header/copyright or file summary -> import should be at 8
+            operation Main(): Unit {
+                ↘
+            }
+        }"#,
+        &["Bar"],
+        &expect![[r#"
+            [
+                Some(
+                    CompletionItem {
+                        label: "Bar",
+                        kind: Function,
+                        sort_text: Some(
+                            "0301Bar",
+                        ),
+                        detail: Some(
+                            "operation Bar() : Unit",
+                        ),
+                        additional_text_edits: Some(
+                            [
+                                TextEdit {
+                                    new_text: "import Foo.Bar;\n            ",
+                                    range: Range {
+                                        start: Position {
+                                            line: 7,
+                                            column: 12,
+                                        },
+                                        end: Position {
+                                            line: 7,
+                                            column: 12,
+                                        },
+                                    },
+                                },
+                            ],
+                        ),
+                    },
+                ),
+            ]
+        "#]],
+    );
+}
+
 // expect an auto-import for `Foo.Bar`, separate from the preexisting glob import `Foo.Bar.*`
 #[test]
 fn glob_import_item_with_same_name() {
