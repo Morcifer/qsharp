@@ -95,10 +95,10 @@ fn bell() {
     };
 
     expect![[r"
-        q_0    ── H ──── ● ──── M ──
-                         │      ╘═══
-        q_1    ───────── X ──── M ──
-                                ╘═══
+        q_0        ──── H ──────── ● ──────── M ────
+                                   │          ╘═════
+        q_1        ─────────────── X ──────── M ────
+                                              ╘═════
     "]]
     .assert_eq(&c.to_string());
 }
@@ -155,10 +155,10 @@ fn control_classical() {
     };
 
     expect![[r"
-        q_0    ── M ─────────── ● ──
-                  ╘═════ ● ═════╪═══
-        q_1    ──────────┼──────┼───
-        q_2    ───────── X ──── X ──
+        q_0        ──── M ─────────────────── ● ────
+                        ╘═════════ ● ═════════╪═════
+        q_1        ────────────────┼──────────┼─────
+        q_2        ─────────────── X ──────── X ────
     "]]
     .assert_eq(&c.to_string());
 }
@@ -195,9 +195,9 @@ fn two_measurements() {
     };
 
     expect![[r"
-        q_0    ── M ──── M ──
-                  ╘══════╪═══
-                         ╘═══
+        q_0        ──── M ──────── M ────
+                        ╘══════════╪═════
+                                   ╘═════
     "]]
     .assert_eq(&c.to_string());
 }
@@ -207,7 +207,7 @@ fn with_args() {
     let c = Circuit {
         operations: vec![Operation {
             gate: "rx".to_string(),
-            display_args: Some("1.5708".to_string()),
+            display_args: Some("1.57".to_string()),
             is_controlled: false,
             is_adjoint: false,
             is_measurement: false,
@@ -221,10 +221,8 @@ fn with_args() {
         }],
     };
 
-    // This looks wonky because the gate label is longer
-    // than the static column width, but we can live with it.
     expect![[r"
-        q_0     rx(1.5708)
+        q_0         rx(1.57) ─
     "]]
     .assert_eq(&c.to_string());
 }
@@ -234,7 +232,7 @@ fn two_targets() {
     let c = Circuit {
         operations: vec![Operation {
             gate: "rzz".to_string(),
-            display_args: Some("1.0000".to_string()),
+            display_args: Some("1.00".to_string()),
             is_controlled: false,
             is_adjoint: false,
             is_measurement: false,
@@ -261,9 +259,9 @@ fn two_targets() {
     // This looks wonky because the gate label is longer
     // than the static column width, but we can live with it.
     expect![[r"
-        q_0     rzz(1.0000)
-        q_1    ───┆───
-        q_2     rzz(1.0000)
+        q_0         rzz(1.00)
+        q_1        ─────┆─────
+        q_2         rzz(1.00)
     "]]
     .assert_eq(&c.to_string());
 }

@@ -195,31 +195,31 @@ impl Row {
     }
 }
 
-const COLUMN_WIDTH: usize = 7;
-const QUBIT_WIRE: &str = "───────";
-const CLASSICAL_WIRE: &str = "═══════";
-const QUBIT_WIRE_CROSS: &str = "───┼───";
-const CLASSICAL_WIRE_CROSS: &str = "═══╪═══";
-const CLASSICAL_WIRE_START: &str = "   ╘═══";
-const QUBIT_WIRE_DASHED_CROSS: &str = "───┆───";
-const CLASSICAL_WIRE_DASHED_CROSS: &str = "═══┆═══";
-const VERTICAL_DASHED: &str = "   ┆   ";
-const VERTICAL: &str = "   │   ";
-const BLANK: &str = "       ";
+const COLUMN_WIDTH: usize = 11;
+const QUBIT_WIRE: &str = "───────────";
+const CLASSICAL_WIRE: &str = "═══════════";
+const QUBIT_WIRE_CROSS: &str = "─────┼─────";
+const CLASSICAL_WIRE_CROSS: &str = "═════╪═════";
+const CLASSICAL_WIRE_START: &str = "     ╘═════";
+const QUBIT_WIRE_DASHED_CROSS: &str = "─────┆─────";
+const CLASSICAL_WIRE_DASHED_CROSS: &str = "═════┆═════";
+const VERTICAL_DASHED: &str = "     ┆     ";
+const VERTICAL: &str = "     │     ";
+const BLANK: &str = "           ";
 
-/// "q_0  "
+/// "q_0      "
 #[allow(clippy::doc_markdown)]
 fn fmt_qubit_label(id: usize) -> String {
     let rest = COLUMN_WIDTH - 2;
     format!("q_{id: <rest$}")
 }
 
-/// "── A ──"
+/// "──── A ────"
 fn fmt_on_qubit_wire(obj: &str) -> String {
     format!("{:─^COLUMN_WIDTH$}", format!(" {obj} "))
 }
 
-/// "══ A ══"
+/// "════ A ════"
 fn fmt_on_classical_wire(obj: &str) -> String {
     format!("{:═^COLUMN_WIDTH$}", format!(" {obj} "))
 }

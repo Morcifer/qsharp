@@ -512,7 +512,7 @@ fn measurement_gate(qubit: usize, result: usize) -> Operation {
 fn rotation_gate<const N: usize>(name: &str, theta: f64, targets: [WireId; N]) -> Operation {
     Operation {
         gate: name.into(),
-        display_args: Some(format!("{theta:.4}")),
+        display_args: Some(format!("{theta:.2}")),
         is_controlled: false,
         is_adjoint: false,
         is_measurement: false,

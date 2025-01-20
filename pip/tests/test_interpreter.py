@@ -247,8 +247,8 @@ def test_dump_circuit() -> None:
     circuit = e.dump_circuit()
     assert str(circuit) == dedent(
         """\
-        q_0    ── X ──
-        q_1    ───────
+        q_0        ──── X ────
+        q_1        ───────────
         """
     )
 
@@ -256,8 +256,8 @@ def test_dump_circuit() -> None:
     circuit = e.dump_circuit()
     assert str(circuit) == dedent(
         """\
-        q_0    ── X ──
-        q_1    ── X ──
+        q_0        ──── X ────
+        q_1        ──── X ────
         """
     )
 
@@ -268,8 +268,8 @@ def test_entry_expr_circuit() -> None:
     circuit = e.circuit("Foo()")
     assert str(circuit) == dedent(
         """\
-        q_0    ── H ──── M ──
-                         ╘═══
+        q_0        ──── H ──────── M ────
+                                   ╘═════
         """
     )
 
@@ -282,8 +282,8 @@ def test_swap_label_circuit() -> None:
     circuit = e.circuit("Foo()")
     assert str(circuit) == dedent(
         """\
-        q_0    ── X ──── X ──
-        q_1    ──────────────
+        q_0        ──── X ──────── X ────
+        q_1        ──────────────────────
         """
     )
 
@@ -472,8 +472,8 @@ def test_operation_circuit() -> None:
     circuit = e.circuit(operation="Foo")
     assert str(circuit) == dedent(
         """\
-        q_0    ── H ──── M ──
-                         ╘═══
+        q_0        ──── H ──────── M ────
+                                   ╘═════
         """
     )
 

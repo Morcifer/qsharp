@@ -67,7 +67,7 @@ fn one_gate() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── H ──
+        q_0        ──── H ────
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -95,9 +95,9 @@ fn measure_same_qubit_twice() {
         .expect("circuit generation should succeed");
 
     expect![["
-        q_0    ── H ──── M ──── M ──
-                         ╘══════╪═══
-                                ╘═══
+        q_0        ──── H ──────── M ──────── M ────
+                                   ╘══════════╪═════
+                                              ╘═════
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -122,9 +122,9 @@ fn toffoli() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── ● ──
-        q_1    ── ● ──
-        q_2    ── X ──
+        q_0        ──── ● ────
+        q_1        ──── ● ────
+        q_2        ──── X ────
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -151,7 +151,7 @@ fn rotation_gate() {
     // The wire isn't visible here since the gate label is longer
     // than the static column width, but we can live with it.
     expect![[r"
-        q_0     rx(1.5708)
+        q_0         rx(1.57) ─
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -178,7 +178,7 @@ fn classical_for_loop() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── X ──── X ──── X ──── X ──── X ──── X ──
+        q_0        ──── X ──────── X ──────── X ──────── X ──────── X ──────── X ────
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -205,9 +205,9 @@ fn m_base_profile() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── H ──── Z ────────────────
-        q_1    ── H ──── ● ──── H ──── M ──
-                                       ╘═══
+        q_0        ──── H ──────── Z ──────────────────────────
+        q_1        ──── H ──────── ● ──────── H ──────── M ────
+                                                         ╘═════
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -234,8 +234,8 @@ fn m_unrestricted_profile() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── H ──── M ──
-                         ╘═══
+        q_0        ──── H ──────── M ────
+                                   ╘═════
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -262,8 +262,8 @@ fn mresetz_unrestricted_profile() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── H ──── M ─── |0〉 ─
-                         ╘══════════
+        q_0        ──── H ──────── M ─────── |0〉 ───
+                                   ╘════════════════
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -290,8 +290,8 @@ fn mresetz_base_profile() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── H ──── M ──
-                         ╘═══
+        q_0        ──── H ──────── M ────
+                                   ╘═════
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -349,10 +349,10 @@ fn unrestricted_profile_result_comparison() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── H ──── M ──── X ─── |0〉 ─
-                         ╘═════════════════
-        q_1    ── H ──── M ─── |0〉 ────────
-                         ╘═════════════════
+        q_0        ──── H ──────── M ──────── X ─────── |0〉 ───
+                                   ╘═══════════════════════════
+        q_1        ──── H ──────── M ─────── |0〉 ──────────────
+                                   ╘═══════════════════════════
     "]]
     .assert_eq(&circ.to_string());
 
@@ -366,10 +366,10 @@ fn unrestricted_profile_result_comparison() {
 
     let circuit = interpreter.get_circuit();
     expect![[r"
-        q_0    ── H ──── M ──── X ─── |0〉 ─
-                         ╘═════════════════
-        q_1    ── H ──── M ─── |0〉 ────────
-                         ╘═════════════════
+        q_0        ──── H ──────── M ──────── X ─────── |0〉 ───
+                                   ╘═══════════════════════════
+        q_1        ──── H ──────── M ─────── |0〉 ──────────────
+                                   ╘═══════════════════════════
     "]]
     .assert_eq(&circuit.to_string());
 }
@@ -397,7 +397,7 @@ fn custom_intrinsic() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ─ foo ─
+        q_0        ─── foo ───
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -428,7 +428,7 @@ fn custom_intrinsic_classical_arg() {
     // A custom intrinsic that doesn't take qubits just doesn't
     // show up on the circuit.
     expect![[r"
-        q_0    ── X ──
+        q_0        ──── X ────
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -459,7 +459,7 @@ fn custom_intrinsic_one_classical_arg() {
     // A custom intrinsic that doesn't take qubits just doesn't
     // show up on the circuit.
     expect![[r"
-        q_0    ── X ── foo(4)
+        q_0        ──── X ───── foo(4) ──
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -497,16 +497,16 @@ fn custom_intrinsic_mixed_args() {
     // This is one gate that spans ten target wires, even though the
     // text visualization doesn't convey that clearly.
     expect![[r"
-        q_0     AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
-        q_1     AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
-        q_2     AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
-        q_3     AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
-        q_4     AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
-        q_5     AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
-        q_6     AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
-        q_7     AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
-        q_8     AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
-        q_9     AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
+        q_0         AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
+        q_1         AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
+        q_2         AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
+        q_3         AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
+        q_4         AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
+        q_5         AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
+        q_6         AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
+        q_7         AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
+        q_8         AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
+        q_9         AccountForEstimatesInternal([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6)], 1)
     "]]
     .assert_eq(&circ.to_string());
 
@@ -536,7 +536,7 @@ fn custom_intrinsic_apply_idle_noise() {
     // ConfigurePauliNoise has no qubit arguments so it shouldn't show up.
     // ApplyIdleNoise is a quantum operation so it shows up.
     expect![[r#"
-        q_0     ApplyIdleNoise
+        q_0         ApplyIdleNoise
     "#]]
     .assert_eq(&circ.to_string());
 }
@@ -564,10 +564,10 @@ fn operation_with_qubits() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── H ──── ● ──── M ──
-                         │      ╘═══
-        q_1    ───────── X ──── M ──
-                                ╘═══
+        q_0        ──── H ──────── ● ──────── M ────
+                                   │          ╘═════
+        q_1        ─────────────── X ──────── M ────
+                                              ╘═════
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -595,12 +595,12 @@ fn operation_with_qubits_base_profile() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── H ──── ● ──── Z ──────────────────────────────
-        q_1    ───────── X ─────┼──────────── Z ────────────────
-        q_2    ── H ─────────── ● ──── H ─────┼───── M ─────────
-                                              │      ╘══════════
-        q_3    ── H ───────────────────────── ● ──── H ──── M ──
-                                                            ╘═══
+        q_0        ──── H ──────── ● ──────── Z ────────────────────────────────────────────────
+        q_1        ─────────────── X ─────────┼──────────────────── Z ──────────────────────────
+        q_2        ──── H ─────────────────── ● ──────── H ─────────┼───────── M ───────────────
+                                                                    │          ╘════════════════
+        q_3        ──── H ───────────────────────────────────────── ● ──────── H ──────── M ────
+                                                                                          ╘═════
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -642,23 +642,23 @@ fn operation_with_qubit_arrays() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── H ──── M ──
-                         ╘═══
-        q_1    ── H ──── M ──
-                         ╘═══
-        q_2    ── X ─────────
-        q_3    ── X ─────────
-        q_4    ── X ─────────
-        q_5    ── X ─────────
-        q_6    ── Y ─────────
-        q_7    ── Y ─────────
-        q_8    ── Y ─────────
-        q_9    ── Y ─────────
-        q_10   ── Y ─────────
-        q_11   ── Y ─────────
-        q_12   ── Y ─────────
-        q_13   ── Y ─────────
-        q_14   ── X ─────────
+        q_0        ──── H ──────── M ────
+                                   ╘═════
+        q_1        ──── H ──────── M ────
+                                   ╘═════
+        q_2        ──── X ───────────────
+        q_3        ──── X ───────────────
+        q_4        ──── X ───────────────
+        q_5        ──── X ───────────────
+        q_6        ──── Y ───────────────
+        q_7        ──── Y ───────────────
+        q_8        ──── Y ───────────────
+        q_9        ──── Y ───────────────
+        q_10       ──── Y ───────────────
+        q_11       ──── Y ───────────────
+        q_12       ──── Y ───────────────
+        q_13       ──── Y ───────────────
+        q_14       ──── X ───────────────
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -698,7 +698,7 @@ fn adjoint_operation() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── Y ──
+        q_0        ──── Y ────
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -719,7 +719,7 @@ fn lambda() {
         .expect("circuit generation should succeed");
 
     expect![[r"
-        q_0    ── H ──
+        q_0        ──── H ────
     "]]
     .assert_eq(&circ.to_string());
 }
@@ -1010,19 +1010,19 @@ mod debugger_stepping {
             step:
             q_0
             step:
-            q_0    ── H ──
+            q_0        ──── H ────
             step:
-            q_0    ── H ──── Z ───────────────────────
-            q_1    ── H ──── ● ──── H ──── M ─── |0〉 ─
-                                           ╘══════════
+            q_0        ──── H ──────── Z ─────────────────────────────────────
+            q_1        ──── H ──────── ● ──────── H ──────── M ─────── |0〉 ───
+                                                             ╘════════════════
             step:
-            q_0    ── H ──── Z ─── |0〉 ───────────────
-            q_1    ── H ──── ● ──── H ──── M ─── |0〉 ─
-                                           ╘══════════
+            q_0        ──── H ──────── Z ─────── |0〉 ─────────────────────────
+            q_1        ──── H ──────── ● ──────── H ──────── M ─────── |0〉 ───
+                                                             ╘════════════════
             step:
-            q_0    ── H ──── Z ─── |0〉 ───────────────
-            q_1    ── H ──── ● ──── H ──── M ─── |0〉 ─
-                                           ╘══════════
+            q_0        ──── H ──────── Z ─────── |0〉 ─────────────────────────
+            q_1        ──── H ──────── ● ──────── H ──────── M ─────── |0〉 ───
+                                                             ╘════════════════
         "]]
         .assert_eq(&circs);
     }
@@ -1051,16 +1051,16 @@ mod debugger_stepping {
             step:
             q_0
             step:
-            q_0    ── H ──
+            q_0        ──── H ────
             step:
-            q_0    ── H ──── M ──
-                             ╘═══
+            q_0        ──── H ──────── M ────
+                                       ╘═════
             step:
-            q_0    ── H ──── M ─── |0〉 ─
-                             ╘══════════
+            q_0        ──── H ──────── M ─────── |0〉 ───
+                                       ╘════════════════
             step:
-            q_0    ── H ──── M ─── |0〉 ─
-                             ╘══════════
+            q_0        ──── H ──────── M ─────── |0〉 ───
+                                       ╘════════════════
         "]]
         .assert_eq(&circs);
     }
@@ -1095,19 +1095,19 @@ mod debugger_stepping {
             step:
             q_0
             step:
-            q_0    ── H ──
+            q_0        ──── H ────
             step:
-            q_0    ── H ──── M ──
-                             ╘═══
+            q_0        ──── H ──────── M ────
+                                       ╘═════
             step:
-            q_0    ── H ──── M ──
-                             ╘═══
+            q_0        ──── H ──────── M ────
+                                       ╘═════
             step:
-            q_0    ── H ──── M ──── X ──
-                             ╘══════════
+            q_0        ──── H ──────── M ──────── X ────
+                                       ╘════════════════
             step:
-            q_0    ── H ──── M ──── X ──
-                             ╘══════════
+            q_0        ──── H ──────── M ──────── X ────
+                                       ╘════════════════
         "]]
         .assert_eq(&circs);
     }
